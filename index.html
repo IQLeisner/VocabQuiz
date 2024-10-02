@@ -14,7 +14,7 @@
             max-width: 600px;
             margin: auto;
         }
-        #quiz-container {
+        #quiz-container, #mode-selection {
             display: none;
         }
     </style>
@@ -22,6 +22,12 @@
 <body>
     <h1>Word Definition Quiz</h1>
     <button onclick="promptForBase64()">Start Quiz</button>
+
+    <div id="mode-selection">
+        <h2>Choose Quiz Mode:</h2>
+        <button onclick="startQuiz('wordToDefinition')">Option 1: Guess the Word</button>
+        <button onclick="startQuiz('definitionToWord')">Option 2: Guess the Definition</button>
+    </div>
 
     <div id="quiz-container">
         <h2 id="question"></h2>
@@ -42,25 +48,18 @@
                 try {
                     const decodedData = atob(base64String);
                     questions = JSON.parse(decodedData);
-                    chooseQuizMode();
+                    document.getElementById('mode-selection').style.display = 'block';
                 } catch (e) {
                     alert("Invalid Base64 string or JSON format. Please try again.");
                 }
             }
         }
 
-        function chooseQuizMode() {
-            const mode = prompt("Choose mode:\n1. Guess the Word (Type the word for the definition)\n2. Guess the Definition (Type the definition for the word)\nType '1' or '2':");
-            if (mode === '1') {
-                quizMode = 'wordToDefinition';
-            } else if (mode === '2') {
-                quizMode = 'definitionToWord';
-            } else {
-                alert("Invalid choice. Please start over.");
-                return;
-            }
+        function startQuiz(mode) {
+            quizMode = mode;
             currentQuestionIndex = 0;
             score = 0;
+            document.getElementById('mode-selection').style.display = 'none';
             document.getElementById('quiz-container').style.display = 'block';
             displayQuestion();
         }
@@ -86,7 +85,7 @@
                 currentQuestionIndex++;
                 displayQuestion();
             } else {
-                const tryAgain = confirm("That's wrong! Would you like to try again or see the answer?");
+                const tryAgain = confirm("That's wrong! Would you like to try again or skip the question?");
                 if (tryAgain) {
                     document.getElementById('answer').value = '';
                 } else {
