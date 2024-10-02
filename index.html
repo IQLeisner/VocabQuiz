@@ -14,10 +14,10 @@
             max-width: 600px;
             margin: auto;
         }
-        #quiz-container, #mode-selection, #modal {
+        #quiz-container, #mode-selection, #modal, #correct-modal {
             display: none;
         }
-        #modal {
+        #modal, #correct-modal {
             position: fixed;
             top: 0;
             left: 0;
@@ -28,19 +28,19 @@
             align-items: center;
             display: flex;
         }
-        #modal-content {
+        #modal-content, #correct-modal-content {
             background: white;
             padding: 20px;
             border-radius: 5px;
             text-align: center;
         }
-        #modal button {
+        #modal button, #correct-modal button {
             margin: 5px;
         }
     </style>
 </head>
 <body>
-    <h1>Quiz de Português</h1>
+    <h1>Word Definition Quiz</h1>
     <button onclick="promptForBase64()">Start Quiz</button>
 
     <div id="mode-selection">
@@ -56,12 +56,20 @@
         <p id="feedback"></p>
     </div>
 
-    <!-- Custom Modal -->
+    <!-- Custom Modal for Wrong Answers -->
     <div id="modal">
         <div id="modal-content">
             <p id="modal-message"></p>
             <button onclick="tryAgain()">Try Again</button>
             <button onclick="skipQuestion()">Skip</button>
+        </div>
+    </div>
+
+    <!-- Custom Modal for Correct Answers -->
+    <div id="correct-modal">
+        <div id="correct-modal-content">
+            <p>Congratulations!</p>
+            <button onclick="nextQuestion()">Ok</button>
         </div>
     </div>
 
@@ -111,25 +119,30 @@
 
             if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
                 score++;
-                currentQuestionIndex++;
-                displayQuestion();
+                document.getElementById('correct-modal').style.display = 'flex'; // Show correct answer modal
             } else {
                 document.getElementById('modal-message').innerText = "That's wrong! Would you like to try again or skip the question?";
-                document.getElementById('modal').style.display = 'flex';
+                document.getElementById('modal').style.display = 'flex';  // Show modal on wrong answer
             }
         }
 
         function tryAgain() {
             document.getElementById('modal').style.display = 'none';
-            document.getElementById('answer').value = '';
+            document.getElementById('answer').value = '';  // Clear answer input for retry
         }
 
         function skipQuestion() {
             const correctAnswer = quizMode === 'wordToDefinition' ? questions[currentQuestionIndex].Word : questions[currentQuestionIndex].Definition;
             alert(`The correct answer is: ${correctAnswer}`);
             currentQuestionIndex++;
-            document.getElementById('modal').style.display = 'none';
+            document.getElementById('modal').style.display = 'none';  // Hide modal
             displayQuestion();
+        }
+
+        function nextQuestion() {
+            document.getElementById('correct-modal').style.display = 'none'; // Hide correct answer modal
+            currentQuestionIndex++;
+            displayQuestion(); // Show next question
         }
 
         function endQuiz() {
