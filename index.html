@@ -14,8 +14,28 @@
             max-width: 600px;
             margin: auto;
         }
-        #quiz-container, #mode-selection {
+        #quiz-container, #mode-selection, #modal {
             display: none;
+        }
+        #modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+        #modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        #modal button {
+            margin: 5px;
         }
     </style>
 </head>
@@ -34,6 +54,15 @@
         <input type="text" id="answer" placeholder="Type your answer here">
         <button onclick="checkAnswer()">Submit Answer</button>
         <p id="feedback"></p>
+    </div>
+
+    <!-- Custom Modal -->
+    <div id="modal">
+        <div id="modal-content">
+            <p id="modal-message"></p>
+            <button onclick="tryAgain()">Try Again</button>
+            <button onclick="skipQuestion()">Skip</button>
+        </div>
     </div>
 
     <script>
@@ -85,15 +114,22 @@
                 currentQuestionIndex++;
                 displayQuestion();
             } else {
-                const tryAgain = confirm("That's wrong! Would you like to try again or skip the question?");
-                if (tryAgain) {
-                    document.getElementById('answer').value = '';
-                } else {
-                    alert(`The correct answer is: ${correctAnswer}`);
-                    currentQuestionIndex++;
-                    displayQuestion();
-                }
+                document.getElementById('modal-message').innerText = "That's wrong! Would you like to try again or skip the question?";
+                document.getElementById('modal').style.display = 'flex';
             }
+        }
+
+        function tryAgain() {
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('answer').value = '';
+        }
+
+        function skipQuestion() {
+            const correctAnswer = quizMode === 'wordToDefinition' ? questions[currentQuestionIndex].Word : questions[currentQuestionIndex].Definition;
+            alert(`The correct answer is: ${correctAnswer}`);
+            currentQuestionIndex++;
+            document.getElementById('modal').style.display = 'none';
+            displayQuestion();
         }
 
         function endQuiz() {
