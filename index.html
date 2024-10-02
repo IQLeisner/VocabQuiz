@@ -14,6 +14,9 @@
             max-width: 600px;
             margin: auto;
         }
+        #quiz-container, #mode-selection, #modal, #correct-modal {
+            display: none;
+        }
         #modal, #correct-modal {
             position: fixed;
             top: 0;
@@ -34,20 +37,15 @@
         #modal button, #correct-modal button {
             margin: 5px;
         }
-	#quiz-container, #mode-selection, #modal, #correct-modal {
-            display: none;
-        }
-
     </style>
 </head>
 <body>
     <h1>Word Definition Quiz</h1>
-    <button onclick="promptForBase64()">Start Quiz</button>
 
     <div id="mode-selection">
         <h2>Choose Quiz Mode:</h2>
-        <button onclick="startQuiz('wordToDefinition')">Option 1: English to Portuguese</button>
-        <button onclick="startQuiz('definitionToWord')">Option 2: Portuguese to English</button>
+        <button onclick="startQuiz('wordToDefinition')">Option 1: Guess the Word</button>
+        <button onclick="startQuiz('definitionToWord')">Option 2: Guess the Definition</button>
     </div>
 
     <div id="quiz-container">
@@ -80,20 +78,24 @@
         let score = 0;
         let quizMode = '';
 
-        function promptForBase64() {
-    const base64String = prompt("Please enter the code your teacher has sent you:");
-    if (base64String) {
-        try {
-            const decodedData = atob(base64String); // Decode Base64
-            const uint8Array = new Uint8Array(decodedData.split('').map(char => char.charCodeAt(0))); // Convert to Uint8Array
-            const jsonString = new TextDecoder("utf-8").decode(uint8Array); // Decode to UTF-8 string
-            questions = JSON.parse(jsonString); // Parse JSON
-            document.getElementById('mode-selection').style.display = 'block';
-        } catch (e) {
-            alert("Invalid Base64 string or JSON format. Please try again.");
+        // Automatically read the Base64 encoded string from the URL
+        const queryString = window.location.search;
+        const params = new URLSearchParams(queryString);
+        const quiz = params.get('quiz');
+        
+        if (quiz) {
+            try {
+                const decodedData = atob(quiz); // Decode Base64
+                const uint8Array = new Uint8Array(decodedData.split('').map(char => char.charCodeAt(0))); // Convert to Uint8Array
+                const jsonString = new TextDecoder("utf-8").decode(uint8Array); // Decode to UTF-8 string
+                questions = JSON.parse(jsonString); // Parse JSON
+                document.getElementById('mode-selection').style.display = 'block'; // Show mode selection
+            } catch (e) {
+                alert("Invalid Base64 string or JSON format. Please try again.");
+            }
+        } else {
+            alert("No quiz data found in the URL.");
         }
-    }
-}
 
         function startQuiz(mode) {
             quizMode = mode;
