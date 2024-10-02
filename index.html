@@ -46,8 +46,8 @@
 
     <div id="mode-selection">
         <h2>Choose Quiz Mode:</h2>
-        <button onclick="startQuiz('wordToDefinition')">Portuguese to English</button>
-        <button onclick="startQuiz('definitionToWord')">English to Portuguese</button>
+        <button onclick="startQuiz('wordToDefinition')">Option 1: English to Portuguese</button>
+        <button onclick="startQuiz('definitionToWord')">Option 2: Portuguese to English</button>
     </div>
 
     <div id="quiz-container">
@@ -81,17 +81,19 @@
         let quizMode = '';
 
         function promptForBase64() {
-            const base64String = prompt("Please enter the code your teacher has sent you:");
-            if (base64String) {
-                try {
-                    const decodedData = atob(base64String);
-                    questions = JSON.parse(decodedData);
-                    document.getElementById('mode-selection').style.display = 'block';
-                } catch (e) {
-                    alert("Invalid Base64 string or JSON format. Please try again.");
-                }
-            }
+    const base64String = prompt("Please enter the code your teacher has sent you:");
+    if (base64String) {
+        try {
+            const decodedData = atob(base64String); // Decode Base64
+            const uint8Array = new Uint8Array(decodedData.split('').map(char => char.charCodeAt(0))); // Convert to Uint8Array
+            const jsonString = new TextDecoder("utf-8").decode(uint8Array); // Decode to UTF-8 string
+            questions = JSON.parse(jsonString); // Parse JSON
+            document.getElementById('mode-selection').style.display = 'block';
+        } catch (e) {
+            alert("Invalid Base64 string or JSON format. Please try again.");
         }
+    }
+}
 
         function startQuiz(mode) {
             quizMode = mode;
