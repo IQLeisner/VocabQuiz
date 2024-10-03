@@ -43,15 +43,15 @@
     <h1>Quiz de Português</h1>
 
     <div id="mode-selection">
-        <h2>Choose Quiz Mode:</h2>
-        <button onclick="startQuiz('wordToDefinition')">Option 1: English to Portuguese</button>
-        <button onclick="startQuiz('definitionToWord')">Option 2: Portuguese to English</button>
+        <h2>Escolha o modo de jogo:</h2>
+        <button onclick="startQuiz('wordToDefinition')">Option 1: Inglês para Português</button>
+        <button onclick="startQuiz('definitionToWord')">Option 2: Português para Inglês</button>
     </div>
 
     <div id="quiz-container">
         <h2 id="question"></h2>
         <input type="text" id="answer" placeholder="Type your answer here">
-        <button onclick="checkAnswer()">Submit Answer</button>
+        <button onclick="checkAnswer()">Enviar resposta</button>
         <p id="feedback"></p>
     </div>
 
@@ -59,15 +59,15 @@
     <div id="modal">
         <div id="modal-content">
             <p id="modal-message"></p>
-            <button onclick="tryAgain()">Try Again</button>
-            <button onclick="skipQuestion()">Skip</button>
+            <button onclick="tryAgain()">Tentar novamente</button>
+            <button onclick="skipQuestion()">Pular</button>
         </div>
     </div>
 
     <!-- Custom Modal for Correct Answers -->
     <div id="correct-modal">
         <div id="correct-modal-content">
-            <p>Congratulations!</p>
+            <p>Mandou bem!</p>
             <button onclick="nextQuestion()">Ok</button>
         </div>
     </div>
@@ -128,7 +128,7 @@
                 score++;
                 document.getElementById('correct-modal').style.display = 'flex'; // Show correct answer modal
             } else {
-                document.getElementById('modal-message').innerText = "That's wrong! Would you like to try again or skip the question?";
+                document.getElementById('modal-message').innerText = "Iiih! Quer tentar de novo?";
                 document.getElementById('modal').style.display = 'flex';  // Show modal on wrong answer
             }
         }
