@@ -50,7 +50,7 @@
 
     <div id="quiz-container">
         <h2 id="question"></h2>
-        <input type="text" id="answer" placeholder="Type your answer here">
+        <input type="text" id="answer" placeholder="Escreva sua resposta aqui">
         <button onclick="checkAnswer()">Enviar resposta</button>
         <p id="feedback"></p>
     </div>
@@ -140,7 +140,7 @@
 
         function skipQuestion() {
             const correctAnswer = quizMode === 'wordToDefinition' ? questions[currentQuestionIndex].Word : questions[currentQuestionIndex].Definition;
-            alert(`The correct answer is: ${correctAnswer}`);
+            alert(`A resposta é: ${correctAnswer}`);
             currentQuestionIndex++;
             document.getElementById('modal').style.display = 'none';  // Hide modal
             displayQuestion();
