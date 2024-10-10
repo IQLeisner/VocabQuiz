@@ -56,7 +56,7 @@
         button:hover {
             background-color: #2980b9; /* Darker shade on hover */
         }
-        #quiz-container, #mode-selection, #modal, #correct-modal {
+        #quiz-container, #mode-selection, #modal, #correct-modal, #end-screen {
             display: none;
         }
     </style>
@@ -91,6 +91,14 @@
         <div id="correct-modal-content">
             <p>Mandou bem!</p>
             <button onclick="nextQuestion()">Ok</button>
+        </div>
+    </div>
+
+    <!-- End Screen -->
+    <div id="end-screen">
+        <div id="end-screen-content">
+            <p>Congratulations! You scored <span id="final-score"></span> out of <span id="total-questions"></span>.</p>
+            <button onclick="restartQuiz()">Começar de novo</button>
         </div>
     </div>
 
@@ -175,8 +183,15 @@
         }
 
         function endQuiz() {
-            alert(`Congratulations! You scored ${score} out of ${questions.length}.`);
             document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('end-screen').style.display = 'block';
+            document.getElementById('final-score').innerText = score;
+            document.getElementById('total-questions').innerText = questions.length;
+        }
+
+        function restartQuiz() {
+            document.getElementById('end-screen').style.display = 'none'; // Hide end screen
+            document.getElementById('mode-selection').style.display = 'block'; // Show mode selection again
         }
 
         // Event listener for "Enter" key
@@ -184,6 +199,12 @@
             if (event.key === 'Enter') {
                 if (document.getElementById('quiz-container').style.display === 'block') {
                     checkAnswer();
+                } else if (document.getElementById('correct-modal').style.display === 'flex') {
+                    nextQuestion(); // Skip the correct answer modal
+                } else if (document.getElementById('modal').style.display === 'flex') {
+                    tryAgain(); // Hide wrong answer modal
+                } else if (document.getElementById('end-screen').style.display === 'block') {
+                    restartQuiz(); // Restart the quiz
                 } else if (document.getElementById('mode-selection').style.display === 'block') {
                     const buttons = document.querySelectorAll('#mode-selection button');
                     buttons[0].click(); // Trigger the first button
