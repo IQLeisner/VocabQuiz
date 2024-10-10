@@ -178,6 +178,18 @@
             alert(`Congratulations! You scored ${score} out of ${questions.length}.`);
             document.getElementById('quiz-container').style.display = 'none';
         }
+
+        // Event listener for "Enter" key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                if (document.getElementById('quiz-container').style.display === 'block') {
+                    checkAnswer();
+                } else if (document.getElementById('mode-selection').style.display === 'block') {
+                    const buttons = document.querySelectorAll('#mode-selection button');
+                    buttons[0].click(); // Trigger the first button
+                }
+            }
+        });
     </script>
 </body>
 </html>
