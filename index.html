@@ -12,10 +12,17 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column; /* Stack items vertically */
             height: 100vh;
             margin: 0;
-            padding: 20px;
             text-align: center;
+        }
+        h1 {
+            position: absolute; /* Fix title at the top */
+            top: 20px; /* Space from the top */
+            width: 100%; /* Full width */
+            font-size: 32px; /* Title size */
+            margin: 0; /* Remove default margin */
         }
         #modal, #correct-modal {
             position: fixed;
